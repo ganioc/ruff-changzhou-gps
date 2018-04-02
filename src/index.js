@@ -106,7 +106,22 @@ function mainHandle() {
 
 }
 
+function taskTemp() {
+    var chip = Buffer.from(ruff.id.chipId).toString("hex");
+    gprsHandle.getCENG(function (err, data) {
+        if (err) {
+            debug("cant get CENG");
+            return;
+        }
+        debug("Getting CENG succeed");
+        var dataTemp = data.toString().replace(/\+CENG/g, "");
+        debug(dataTemp);
+        gprsHandle.write(chip + ":" + "GPS:" + dataTemp);
+    });
+}
+
 function task1() {
+
     var dataGPS = GPS.getGPS();
     var chip = Buffer.from(ruff.id.chipId).toString("hex");
 
