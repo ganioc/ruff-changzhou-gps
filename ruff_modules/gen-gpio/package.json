@@ -1,0 +1,7 @@
+{
+    "name": "gen-gpio",
+    "version": "0.1.0",
+    "description": "a general gpio driver",
+    "author": "yang jun",
+    "main": "src/index.js"
+}

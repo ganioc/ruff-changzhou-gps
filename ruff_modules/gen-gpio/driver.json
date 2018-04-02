@@ -1,0 +1,14 @@
+{
+    "models": [
+        "gen-gpio-out"
+    ],
+    "inputs": {
+        "gpio-out": {
+            "type": "gpio",
+            "args": {
+                "direction": "out",
+                "level": "high"
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "models": [
+        "gen-gpio-in"
+    ],
+    "inputs": {
+        "gpio-in": {
+            "type": "gpio",
+            "args": {
+	      "direction":"in",
+	      "edge":"both"
+	      
+            }
+        }
+    }
+}

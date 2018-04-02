@@ -1,0 +1,21 @@
+{
+    "mapping": {
+        "gprs/gnd": "ground/gnd-0",
+        "gprs/uart": "ruff-kgc-v01/GPRS_UART",
+        "gprs/enPwr": "ruff-kgc-v01/GPRS_EN",
+        "gps/gnd": "ground/gnd-1",
+        "gps/uart": "ruff-kgc-v01/GPS_UART",
+        "gps/enPwr": "ruff-kgc-v01/GPS_EN",
+        "dout0/gnd": "ground/gnd-0",
+        "dout0/gpio-out": "ruff-kgc-v01/DOUT0",
+        "dout1/gnd": "ground/gnd-1",
+        "dout1/gpio-out": "ruff-kgc-v01/DOUT1",
+        "din0/gnd": "ground/gnd-0",
+        "din0/gpio-in": "ruff-kgc-v01/DIN0",
+        "din1/gnd": "ground/gnd-1",
+        "din1/gpio-in": "ruff-kgc-v01/DIN1",
+        "rs232/gnd": "ground/gnd-0",
+        "rs232/uart": "ruff-kgc-v01/RS232",
+        "rs485/rs485": "ruff-kgc-v01/RS485"
+    }
+}

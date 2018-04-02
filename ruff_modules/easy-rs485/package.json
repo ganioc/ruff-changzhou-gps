@@ -1,0 +1,41 @@
+{
+  "name": "easy-rs485",
+  "version": "0.1.4",
+  "description": "Rs485 interface wrapper.",
+  "author": "Nanchao Inc.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruff-drivers/easy-rs485.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ruff-drivers/easy-rs485/issues"
+  },
+  "homepage": "https://github.com/ruff-drivers/easy-rs485",
+  "keywords": [
+    "ruff",
+    "driver",
+    "rs485"
+  ],
+  "main": "src/index.js",
+  "boards": {
+    "ruff-1294-v30": "^0.2.0"
+  },
+  "scripts": {
+    "install-sdk": "rvm install --local",
+    "install-rap-dependencies": "rap install",
+    "lint": "eslint .",
+    "pretest": "npm run lint"
+  },
+  "devDependencies": {
+    "eslint": "^2.11.1",
+    "ruff-standard": "^0.1.4",
+    "rvm": "^0.3.2"
+  },
+  "ruff": {
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  }
+}

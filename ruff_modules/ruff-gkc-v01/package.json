@@ -1,0 +1,23 @@
+{
+    "name": "ruff-gkc-v01",
+    "version": "0.1.0",
+    "description": "Ruff GKC Board Metadata",
+    "author": "Nanchao Inc.",
+    "dependencies": {
+        "rap-tm4c1294": "^0.6.1"
+    },
+    "ruff": {
+        "session-format": {
+            "serial": {
+                "type": "string",
+                "description": "designate device serial",
+                "required": true,
+                "visible": true
+            }
+        },
+        "dependencies": {
+            "button-gpio": "^2.0.9",
+            "led-gpio": "^3.0.0"
+        }
+    }
+}

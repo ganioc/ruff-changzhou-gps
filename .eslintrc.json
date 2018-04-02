@@ -1,0 +1,33 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-console": "off"
+
+    },
+    "globals": {
+        "$": false,
+        "log": false,
+        "ruff": false,
+        "__filename": false,
+        "Buffer": false,
+        "process": false,
+        "uv": false,
+        "setImmediate": false
+    }
+}

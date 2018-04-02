@@ -1,0 +1,10 @@
+{
+    "ruff": {
+        "boards": {
+            "ruff-gkc-v01": {
+                "version": "0.1.0",
+                "isActive": true
+            }
+        }
+    }
+}

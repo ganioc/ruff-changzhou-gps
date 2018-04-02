@@ -1,0 +1,24 @@
+{
+    "name": "sim800-tcp",
+    "version": "0.1.0",
+    "description": "This driver is used to create multiple TCP clients.",
+    "author": "Nanchao Inc.",
+    "license": "MIT",
+    "keywords": [
+        "simcom",
+        "sim800",
+        "gprs",
+        "uart"
+    ],
+    "main": "src/index.js",
+    "scripts": {
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "eslint": "^2.13.1",
+        "ruff-standard": "^0.1.6"
+    },
+    "ruff": {
+        "devDependencies": {}
+    }
+}

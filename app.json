@@ -1,0 +1,145 @@
+{
+    "devices": [
+        {
+            "id": "gprs",
+            "model": "sim800-tcp",
+            "driver": "sim800-tcp",
+            "inputs": {
+                "uart": {
+                    "type": "uart",
+                    "args": {
+                        "baudRate": 115200,
+                        "stopBits": 1,
+                        "dataBits": 8,
+                        "parity": "none",
+                        "flowControl": "none"
+                    }
+                },
+                "enPwr": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "out",
+                        "level": "high"
+                    }
+                }
+            }
+        },
+        {
+            "id": "gps",
+            "model": "atgm332d5n3x-gps-new",
+            "driver": "atgm332d5n3x-gps-new",
+            "inputs": {
+                "uart": {
+                    "type": "uart",
+                    "args": {
+                        "baudRate": 9600,
+                        "stopBits": 1,
+                        "dataBits": 8,
+                        "parity": "none",
+                        "flowControl": "none"
+                    }
+                },
+                "enPwr": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "out",
+                        "level": "high"
+                    }
+                }
+            }
+        },
+        {
+            "id": "dout0",
+            "model": "gen-gpio/",
+            "driver": "gen-gpio",
+            "inputs": {
+                "gpio-out": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "out",
+                        "level": "high"
+                    }
+                }
+            }
+        },
+        {
+            "id": "dout1",
+            "model": "gen-gpio",
+            "driver": "gen-gpio",
+            "inputs": {
+                "gpio-out": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "out",
+                        "level": "high"
+                    }
+                }
+            }
+        },
+        {
+            "id": "din0",
+            "model": "gen-gpin",
+            "driver": "gen-gpin",
+            "inputs": {
+                "gpio-in": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "in",
+                        "edge": "both"
+                    }
+                }
+            }
+        },
+        {
+            "id": "din1",
+            "model": "gen-gpin",
+            "driver": "gen-gpin",
+            "inputs": {
+                "gpio-in": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "in",
+                        "edge": "both"
+                    }
+                }
+            }
+        },
+        {
+            "id": "rs232",
+            "model": "gen-rs232",
+            "driver": "gen-rs232",
+            "inputs": {
+                "uart": {
+                    "type": "uart",
+                    "args": {
+                        "baudRate": 115200,
+                        "stopBits": 1,
+                        "dataBits": 8,
+                        "parity": "none",
+                        "flowControl": "none"
+                    }
+                }
+            }
+        },
+        {
+            "id": "rs485",
+            "model": "easy-rs485",
+            "driver": "easy-rs485",
+            "power": null,
+            "inputs": {
+                "rs485": {
+                    "type": "rs485",
+                    "args": {
+                        "baudRate": 9600,
+                        "stopBits": 1,
+                        "dataBits": 8,
+                        "parity": "none",
+                        "flowControl": "none",
+                        "rs485TxTimeout": 1,
+                        "rs485RxTimeout": -1
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "name": "test-app-v3",
+    "version": "0.1.0",
+    "description": "",
+    "author": "",
+    "main": "src/index.js",
+    "ruff": {
+        "dependencies": {
+            "sim800-tcp": "*",
+            "atgm332d5n3x-gps-new": "*",
+            "gen-gpio": "*",
+            "gen-gpin": "*",
+            "gen-rs232": "*",
+            "easy-rs485": "*"
+        },
+        "version": 1,
+        "devDependencies": {}
+    }
+}
