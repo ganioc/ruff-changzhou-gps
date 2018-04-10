@@ -53,9 +53,11 @@ $.ready(function (error) {
 
     GPIO.flashStatusLEDIdle();
 
-    setInterval(function () {
-        taskGPS();
-    }, 10000);
+    // setInterval(function () {
+    //     taskGPS();
+    // }, 10000);
+
+    //runE2PROM();
 
     //runAin();
 
@@ -277,4 +279,10 @@ function runAin() {
             debug(data);
         });
     }, 1000);
+}
+
+function runE2PROM() {
+    //EEPROM.writeName("Mechanical");
+    var name = EEPROM.readName();
+    console.log(name);
 }
