@@ -53,6 +53,9 @@ $.ready(function (error) {
 
     GPIO.flashStatusLEDIdle();
 
+    setInterval(function () {
+        taskGPS();
+    }, 10000);
 
     //runAin();
 
@@ -62,21 +65,21 @@ $.ready(function (error) {
 
     //runRS485();
 
-    gprsHandle = new GPRS({
-        gprs: $("#gprs"),
-        initTimeout: INIT_GPRS_TIMEOUT,
-        powerOnTimeout: PON_GPRS_TIMEOUT,
-        port: PORT,
-        addr: ADDR,
-        callback: mainHandle, // main function
-        dataCallback: dataHandle // TCP data handler
-    });
+    // gprsHandle = new GPRS({
+    //     gprs: $("#gprs"),
+    //     initTimeout: INIT_GPRS_TIMEOUT,
+    //     powerOnTimeout: PON_GPRS_TIMEOUT,
+    //     port: PORT,
+    //     addr: ADDR,
+    //     callback: mainHandle, // main function
+    //     dataCallback: dataHandle // TCP data handler
+    // });
 
     //Startup.setTime();
 
-    setInterval(function () {
-        Startup.getTime();
-    }, 1000);
+    // setInterval(function () {
+    //     Startup.getTime();
+    // }, 1000);
 
 });
 // TCP data handler
@@ -118,6 +121,18 @@ function taskTemp() {
         debug(dataTemp);
         gprsHandle.write(chip + ":" + "GPS:" + dataTemp);
     });
+}
+
+function taskGPS() {
+    var dataGPS = GPS.getGPS();
+
+    if (dataGPS.latitude !== 0 || dataGPS.longitude !== 0) {
+        debug("Getting real GPS succeed");
+        debug("GPS:" + dataGPS.longitude + ":" + dataGPS.latitude);
+        return;
+    } else {
+        debug("Getting real GPS fail");
+    }
 }
 
 function task1() {
