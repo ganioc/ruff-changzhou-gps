@@ -2,6 +2,7 @@
 var Startup = require("./startup.js");
 //var GPIO = require("./gpio");
 var EEPROM = require("./eeprom.js");
+var Flash = require("./flash.js");
 var Task = require("./task.js");
 var GPIO = require("./gpio.js");
 var GPRS = require("./gprs.js");
@@ -56,6 +57,8 @@ $.ready(function (error) {
     // setInterval(function () {
     //     taskGPS();
     // }, 10000);
+
+    runFlash();
 
     //runE2PROM();
 
@@ -285,4 +288,11 @@ function runE2PROM() {
     //EEPROM.writeName("Mechanical");
     var name = EEPROM.readName();
     console.log(name);
+}
+
+function runFlash() {
+    //Flash.eraseBlock(0);
+    //Flash.write(0, "hello world");
+    var data = Flash.read(0, 11);
+    console.log(data);
 }
