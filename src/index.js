@@ -58,7 +58,7 @@ $.ready(function (error) {
     //     taskGPS();
     // }, 10000);
 
-    runFlash();
+    //runFlash();
 
     //runE2PROM();
 
