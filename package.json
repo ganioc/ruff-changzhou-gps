@@ -11,7 +11,9 @@
             "gen-gpio": "*",
             "gen-gpin": "*",
             "gen-rs232": "*",
-            "easy-rs485": "*"
+            "easy-rs485": "*",
+            "otalib-1294-user": "*",
+            "rson-unpack": "*"
         },
         "version": 1,
         "devDependencies": {}
