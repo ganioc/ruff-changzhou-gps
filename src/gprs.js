@@ -3,12 +3,26 @@ var Util = require("./util");
 var Startup = require("./startup.js");
 var GPIO = require("./gpio");
 var series = require("ruff-async").series;
-
+var config = require("./ota-config");
+var EClient = require("./ota-eclient");
+var otalib = require("otalib-1294-user");
+var RSON = require("rson");
+var sysconfig;
 
 var beep = GPIO.beep;
 var INIT_GPRS_TIMEOUT = 60000;
 var PON_GPRS_TIMEOUT = 60000;
 
+// try {
+//     appconfig = RSON.rson(otalib.getAppconfig());
+// } catch (e) {
+//     log.error("Invalid appconfig", e);
+// }
+try {
+    sysconfig = RSON.rson(otalib.getSysconfig());
+} catch (e) {
+    log.error("Invalid sysconfig", e);
+}
 var debug = (function () {
     var header = "[" + __filename + "]";
     return function () {
@@ -23,6 +37,7 @@ function GPRS(option) {
     this.gprs = option.gprs;
 
     var that = this;
+    var eClient = undefined;
 
     Startup.enableNetDev(option.gprs, {
         initTimeout: option.initTimeout || INIT_GPRS_TIMEOUT,
@@ -61,7 +76,20 @@ function GPRS(option) {
             debug(err);
             Util.delayedReboot(300000); // 5 min
         });
+
+
     });
+    // Begin the eClient for OTA purpose
+    // var eConfig = config.getEConnConfig(sysconfig);
+
+    // if (eConfig) {
+    //     that.eClient = new EClient(option.gprs, eConfig, {
+    //         reboot: ruff.softReset
+    //     });
+    //     that.eClient.connect(5000);
+    // }
+
+
 }
 GPRS.prototype.write = function (data, callback) {
     this.client.write(data, callback);

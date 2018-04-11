@@ -13,7 +13,8 @@
             "gen-rs232": "*",
             "easy-rs485": "*",
             "otalib-1294-user": "*",
-            "rson-unpack": "*"
+            "rson-unpack": "*",
+            "rson": "*"
         },
         "version": 1,
         "devDependencies": {}

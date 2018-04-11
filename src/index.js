@@ -1,4 +1,8 @@
 "use strict";
+var otalib = require("otalib-1294-user");
+var appBootSuccess = otalib.appBootSuccess;
+appBootSuccess();
+
 var Startup = require("./startup.js");
 //var GPIO = require("./gpio");
 var EEPROM = require("./eeprom.js");
@@ -16,6 +20,18 @@ var gprsHandle = undefined;
 var canHandle = undefined;
 var rs232Handle = undefined;
 var rs485Handle = undefined;
+// var eclient = undefined;
+
+var config = require("./ota-config");
+var EClient = require("./ota-eclient");
+var RSON = require("rson");
+
+var appconfig = undefined;
+var sysconfig = undefined;
+
+
+
+
 
 var debug = (function () {
     var header = "[" + __filename + "]";
@@ -70,15 +86,15 @@ $.ready(function (error) {
 
     //runRS485();
 
-    // gprsHandle = new GPRS({
-    //     gprs: $("#gprs"),
-    //     initTimeout: INIT_GPRS_TIMEOUT,
-    //     powerOnTimeout: PON_GPRS_TIMEOUT,
-    //     port: PORT,
-    //     addr: ADDR,
-    //     callback: mainHandle, // main function
-    //     dataCallback: dataHandle // TCP data handler
-    // });
+    gprsHandle = new GPRS({
+        gprs: $("#gprs"),
+        initTimeout: INIT_GPRS_TIMEOUT,
+        powerOnTimeout: PON_GPRS_TIMEOUT,
+        port: PORT,
+        addr: ADDR,
+        callback: mainHandle, // main function
+        dataCallback: dataHandle // TCP data handler
+    });
 
     //Startup.setTime();
 
@@ -105,6 +121,8 @@ function mainHandle() {
         task1();
 
     }, 20000);
+
+
 
     // task2
     task2();

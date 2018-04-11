@@ -1,0 +1,8 @@
+{
+    "name": "rson-pack",
+    "version": "0.1.0",
+    "description": "Ruff jSon pack",
+    "author": "Nanchao Inc.",
+    "main": "src/index.js",
+    "license": "MIT"
+}
