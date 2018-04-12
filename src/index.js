@@ -70,6 +70,10 @@ $.ready(function (error) {
 
     GPIO.flashStatusLEDIdle();
 
+    var str = "iamastudent";
+
+    debug(str.substr(1, 2));
+
     // setInterval(function () {
     //     taskGPS();
     // }, 10000);
