@@ -59,10 +59,13 @@ EClient.prototype.start = function () {
     return;
   }
   var comm = new Comm(this.socket);
+
   this.socket.on("close", function () {
     comm.removeAllListeners();
   });
+
   var hbCounts = 0;
+
   comm.on("hbs", function (state) {
     console.log("[Eclient]: heart beat state is", state, hbCounts);
     if (state) {

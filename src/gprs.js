@@ -20,6 +20,9 @@ var PON_GPRS_TIMEOUT = 60000;
 // }
 try {
     sysconfig = RSON.rson(otalib.getSysconfig());
+    log.info("sysconfig is:");
+    log.info(sysconfig.explorer);
+
 } catch (e) {
     log.error("Invalid sysconfig", e);
 }
@@ -37,7 +40,7 @@ function GPRS(option) {
     this.gprs = option.gprs;
 
     var that = this;
-    var eClient = undefined;
+    var eClient = undefined; // OTA client
 
     Startup.enableNetDev(option.gprs, {
         initTimeout: option.initTimeout || INIT_GPRS_TIMEOUT,
@@ -46,9 +49,7 @@ function GPRS(option) {
         tag: "GPRS"
     }, function () {
         beep(500);
-        // setTimeout(function () {
-        //     that.configCENG();
-        // }, 5000);
+
         GPIO.flashStatusLEDConnected();
         GPIO.turnOnGreen();
 
@@ -77,10 +78,30 @@ function GPRS(option) {
             Util.delayedReboot(300000); // 5 min
         });
 
+        // Begin the eClient for OTA purpose
+        debug("Try to connect to OTA server:");
+        var eConfig = config.getEConnConfig(sysconfig);
+
+        debug("OTA IP:", eConfig.host);
+        debug("OTA Port:", eConfig.port);
+
+        if (eConfig) {
+            that.eClient = new EClient(option.gprs, eConfig, {
+                /*
+                 * if you want to turnOn led after connected to explorer,
+                 * assgin state property to this option
+                 */
+                // state: eClientLed,
+                reboot: ruff.softReset
+            });
+            that.eClient.connect(25000); // 连接OTA server, 25秒后
+        } else {
+            log.error("Invalid explorer connConfig");
+        }
+
 
     });
-    // Begin the eClient for OTA purpose
-    // var eConfig = config.getEConnConfig(sysconfig);
+
 
     // if (eConfig) {
     //     that.eClient = new EClient(option.gprs, eConfig, {

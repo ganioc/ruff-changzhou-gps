@@ -22,15 +22,12 @@ var rs232Handle = undefined;
 var rs485Handle = undefined;
 // var eclient = undefined;
 
-var config = require("./ota-config");
-var EClient = require("./ota-eclient");
-var RSON = require("rson");
+// var config = require("./ota-config");
+// var EClient = require("./ota-eclient");
+// var RSON = require("rson");
 
-var appconfig = undefined;
-var sysconfig = undefined;
-
-
-
+// var appconfig = undefined;
+// var sysconfig = undefined;
 
 
 var debug = (function () {
@@ -70,9 +67,9 @@ $.ready(function (error) {
 
     GPIO.flashStatusLEDIdle();
 
-    var str = "iamastudent";
+    // var str = "iamastudent";
 
-    debug(str.substr(1, 2));
+    // debug(str.substr(1, 2));
 
     // setInterval(function () {
     //     taskGPS();
@@ -218,7 +215,6 @@ function task2() {
 }
 
 function task3() {
-    debug("Connect to OTA server");
 
     // connectEServer(gprs, config.getEConnConfig(sysconfig));
 
