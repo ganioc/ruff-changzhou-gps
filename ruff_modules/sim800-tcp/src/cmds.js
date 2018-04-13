@@ -231,7 +231,9 @@ function createCommands(cmdManager) {
         series([
             this._waitAttach.bind(this),
             this.setApn.bind(this, apn, '', ''),
+
             this.bringUpConnection.bind(this),
+
             this.getIp.bind(this)
         ], function (error, values) {
             if (error) {

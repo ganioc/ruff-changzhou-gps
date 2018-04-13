@@ -5,8 +5,8 @@ var util = require('util');
 var Parser = require('./line-parser');
 var Queue = require('ruff-async').Queue;
 
-var RESPONSE_TIMEOUT = 10 * 1000; // 10 * 1000; change by yang jun
-var PROMOTE_TIMEOUT = 5000; // 5000 * 10; change by yang jun
+var RESPONSE_TIMEOUT = 20 * 1000; // 10 * 1000; change by yang jun
+var PROMOTE_TIMEOUT = 5000 * 10; // 5000 * 10; change by yang jun
 
 var SENDDATA_RESPONSE_TIMEOUT = 5000; // add by yang jun
 

@@ -26,6 +26,7 @@ try {
 } catch (e) {
     log.error("Invalid sysconfig", e);
 }
+
 var debug = (function () {
     var header = "[" + __filename + "]";
     return function () {
@@ -75,7 +76,7 @@ function GPRS(option) {
         that.client.on("error", function (err) {
             debug("gprs client has error:");
             debug(err);
-            Util.delayedReboot(300000); // 5 min
+            Util.delayedReboot(100000); // 5 min
         });
 
         // Begin the eClient for OTA purpose
@@ -94,7 +95,7 @@ function GPRS(option) {
                 // state: eClientLed,
                 reboot: ruff.softReset
             });
-            that.eClient.connect(25000); // 连接OTA server, 25秒后
+            that.eClient.connect(10000); // 连接OTA server, 25秒后
         } else {
             log.error("Invalid explorer connConfig");
         }
