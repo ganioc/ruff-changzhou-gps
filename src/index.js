@@ -87,15 +87,15 @@ $.ready(function (error) {
 
     //runRS485();
 
-    gprsHandle = new GPRS({
-        gprs: $("#gprs"),
-        initTimeout: INIT_GPRS_TIMEOUT,
-        powerOnTimeout: PON_GPRS_TIMEOUT,
-        port: PORT,
-        addr: ADDR,
-        callback: mainHandle, // main function
-        dataCallback: dataHandle // TCP data handler
-    });
+    // gprsHandle = new GPRS({
+    //     gprs: $("#gprs"),
+    //     initTimeout: INIT_GPRS_TIMEOUT,
+    //     powerOnTimeout: PON_GPRS_TIMEOUT,
+    //     port: PORT,
+    //     addr: ADDR,
+    //     callback: mainHandle, // main function
+    //     dataCallback: dataHandle // TCP data handler
+    // });
 
     //Startup.setTime();
 

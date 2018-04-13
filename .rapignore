@@ -1,7 +1,7 @@
 # See https://github.com/isaacs/node-glob
 
 test/**
-
+docs/**
 *.tar
 *.zip
 

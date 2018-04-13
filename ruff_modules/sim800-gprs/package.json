@@ -1,0 +1,12 @@
+{
+    "name": "sim800-gprs",
+    "version": "0.1.0",
+    "description": "A wrapper of sim800-tcp and ota library",
+    "author": "Nanchao Inc.",
+    "main": "src/index.js",
+    "ruff": {
+        "dependencies": {
+            "rson-unpack": "^0.1.0"
+        }
+    }
+}
