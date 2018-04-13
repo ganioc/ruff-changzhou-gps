@@ -9,7 +9,7 @@ var EEPROM = require("./eeprom.js");
 var Flash = require("./flash.js");
 var Task = require("./task.js");
 var GPIO = require("./gpio.js");
-var GPRS = require("./gprs.js");
+var GPRS = require("sim800-gprs");
 var GPS = require("./gps.js");
 var INIT_GPRS_TIMEOUT = 60000;
 var PON_GPRS_TIMEOUT = 60000;
@@ -87,15 +87,20 @@ $.ready(function (error) {
 
     //runRS485();
 
-    // gprsHandle = new GPRS({
-    //     gprs: $("#gprs"),
-    //     initTimeout: INIT_GPRS_TIMEOUT,
-    //     powerOnTimeout: PON_GPRS_TIMEOUT,
-    //     port: PORT,
-    //     addr: ADDR,
-    //     callback: mainHandle, // main function
-    //     dataCallback: dataHandle // TCP data handler
-    // });
+    gprsHandle = new GPRS({
+        gprs: $("#gprs"),
+        initTimeout: INIT_GPRS_TIMEOUT,
+        powerOnTimeout: PON_GPRS_TIMEOUT,
+        port: PORT,
+        addr: ADDR,
+        callback: mainHandle, // main function
+        dataCallback: dataHandle, // TCP data handler
+        afterConnect: function () {
+            GPIO.beep(500);
+            GPIO.flashStatusLEDConnected();
+            GPIO.turnOnGreen();
+        }
+    });
 
     //Startup.setTime();
 
