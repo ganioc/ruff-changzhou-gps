@@ -11,7 +11,7 @@ module.exports = driver({
     attach: function (inputs) {
         this._enPwr = inputs['enPwr'];
         this._uart = inputs['uart'];
-        if (1) {
+        if (0) {
             this._uart.on('data', function (data) {
                 console.log('[U]', data.toString().replace(/\r/g, '\\r').replace(/\n/g, '\\n'));
             });
