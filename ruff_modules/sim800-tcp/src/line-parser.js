@@ -56,6 +56,7 @@ Parser.prototype._parse = function () {
 
 Parser.prototype._parseLine = function () {
     debug('parse line');
+
     if (this._tryPromote === true) {
         this._tryParsePromote();
     }
@@ -112,7 +113,7 @@ Parser.prototype.waitData = function (length) {
 
 module.exports = Parser;
 
-function debug () {
+function debug() {
     return;
     Array.prototype.unshift.call(arguments, '[' + __filename + ']');
     console.log.apply(this, arguments);

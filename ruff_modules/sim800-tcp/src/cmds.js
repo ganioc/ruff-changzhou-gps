@@ -16,6 +16,59 @@ var debug = (function () {
 function createCommands(cmdManager) {
     var commands = Object.create(null);
 
+    // added by yangjun 2018-4-16
+
+    commands.sendExAT1 = function (cmd, timeout, callback) {
+        if (typeof timeout === "function") {
+            cmdManager.sendAT({
+                content: cmd,
+                responseFormat: 1
+            }, timeout);
+        } else if (typeof timeout === "number" && typeof callback === "function") {
+            cmdManager.sendAT({
+                content: cmd,
+                responseFormat: 1,
+                timeout: timeout
+            }, callback);
+        } else {
+            throw new Error("Wrong arguments for sendExAT1");
+        }
+    };
+    commands.sendExAT2 = function (cmd, timeout, callback) {
+        if (typeof timeout === "function") {
+            cmdManager.sendAT({
+                content: cmd,
+                responseFormat: 2
+            }, timeout);
+        } else if (typeof timeout === "number" && typeof callback === "function") {
+            cmdManager.sendAT({
+                content: cmd,
+                responseFormat: 2,
+                timeout: timeout
+            }, callback);
+        } else {
+            throw new Error("Wrong arguments for sendExAT2");
+        }
+    };
+    commands.sendExAT3 = function (cmd, responseLines, timeout, callback) {
+        if (typeof timeout === "function") {
+            cmdManager.sendAT({
+                content: cmd,
+                responseFormat: 3,
+                responseLines: responseLines
+            }, timeout);
+        } else if (typeof timeout === "number" && typeof callback === "function") {
+            cmdManager.sendAT({
+                content: cmd,
+                responseFormat: 3,
+                responseLines: responseLines,
+                timeout: timeout
+            }, callback);
+        } else {
+            throw new Error("Wrong arguments for sendExAT3");
+        }
+    };
+
     commands.sendAT1 = function (cmd, callback) {
         cmdManager.sendAT({
             content: cmd,

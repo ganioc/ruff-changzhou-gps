@@ -112,7 +112,7 @@ Parser.prototype._parseData = function () {
         return true;
     }
     return false;
-}
+};
 
 Parser.prototype.waitPromote = function (promote) {
     debug('in parser, now wait promote');
