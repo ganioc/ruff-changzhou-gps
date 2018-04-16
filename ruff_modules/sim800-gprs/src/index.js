@@ -93,7 +93,7 @@ function GPRS(option) {
                 // state: eClientLed,
                 reboot: ruff.softReset
             });
-            that.eClient.connect(46000); // 连接OTA server, 46秒后
+            that.eClient.connect(30000); // 连接OTA server, 46秒后
         } else {
             log.error("Invalid explorer connConfig");
         }
