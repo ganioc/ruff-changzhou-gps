@@ -166,7 +166,7 @@ function createCommands(cmdManager) {
     };
 
     commands.getAttachStatus = function (callback) {
-        this.sendAT2('AT+CGATT?', function (error, result) {
+        this.sendExAT2('AT+CGATT?', 10000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
                 return;
@@ -220,15 +220,15 @@ function createCommands(cmdManager) {
 
     // value = 0 to detach gprs service
     // value = 1 to attach gprs service
-    commands.setGprsAttach = function (value, callback) {
-        this.sendAT('AT+CGATT=' + value, function (error, result) {
-            if (error) {
-                callback && callback(error, result);
-                return;
-            }
-            callback && callback(undefined, result[0]);
-        });
-    };
+    // commands.setGprsAttach = function (value, callback) {
+    //     this.sendAT('AT+CGATT=' + value, function (error, result) {
+    //         if (error) {
+    //             callback && callback(error, result);
+    //             return;
+    //         }
+    //         callback && callback(undefined, result[0]);
+    //     });
+    // };
 
     commands.setApn = function (apn, user, passwd, callback) {
         this.sendAT1('AT+CSTT="' + apn + '","' + user + '","' + passwd + '"', function (error, result) {
@@ -241,7 +241,7 @@ function createCommands(cmdManager) {
     };
 
     commands.bringUpConnection = function (callback) {
-        this.sendAT1('AT+CIICR', function (error, result) {
+        this.sendExAT1('AT+CIICR', 60000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
                 return;
@@ -366,20 +366,7 @@ function createCommands(cmdManager) {
             callback && callback(undefined, result);
         });
     };
-    // //////////////////
-    // added by yang jun
-    // //////////////////
-    // commands.getAT = function (callback) {
-    //     this.sendAT1('AT', function (error, result) {
-    //         if (error) {
-    //             callback && callback(error, result);
-    //         } else {
-    //             callback && callback(undefined, result[0]);
-    //         }
-    //     });
-    //     // this.createAT1Cmd('AT');
 
-    // };
     commands.createAT1Cmd = function (strCmd) {
         return function (callback) {
             commands.sendAT1(strCmd, function (error, result) {
@@ -390,8 +377,9 @@ function createCommands(cmdManager) {
                 console.log(result);
                 callback && callback(undefined, result);
             });
-        }
-    }
+        };
+    };
+
     commands.createAT2Cmd = function (strCmd) {
         return function (callback) {
             commands.sendAT2(strCmd, function (error, result) {
@@ -463,7 +451,7 @@ function createCommands(cmdManager) {
         });
     };
     commands.getCLBSUrl = function (callback) {
-        this.sendAT2('AT+CLBSCFG=0,3', function (error, result) {
+        this.sendExAT2('AT+CLBSCFG=0,3', 10000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
             } else {
@@ -472,7 +460,7 @@ function createCommands(cmdManager) {
         });
     };
     commands.getCLBS = function (callback) {
-        this.sendAT2('AT+CLBS=1,1', function (error, result) {
+        this.sendExAT2('AT+CLBS=1,1', 10000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
             } else {
@@ -498,36 +486,9 @@ function createCommands(cmdManager) {
             });
         };
     };
-    ////
-    // commands.getCLBSCFG = function (callback) {
-    //     this.sendAT2('AT+CLBSCFG=0,1', function (error, result) {
-    //         if (error) {
-    //             callback && callback(error, result);
-    //         } else {
-    //             callback && callback(undefined, result[0]);
-    //         }
-    //     });
-    // };
-    // commands.getCLBSCFG2 = function (callback) {
-    //     this.sendAT2('AT+CLBSCFG=0,2', function (error, result) {
-    //         if (error) {
-    //             callback && callback(error, result);
-    //         } else {
-    //             callback && callback(undefined, result[0]);
-    //         }
-    //     });
-    // };
-    // commands.getCLBS = function (callback) {
-    //     this.sendAT2('AT+CLBS=1,1', function (error, result) {
-    //         if (error) {
-    //             callback && callback(error, result);
-    //         } else {
-    //             callback && callback(undefined, result[0]);
-    //         }
-    //     });
-    // };
+
     commands.getCENG = function (callback) {
-        this.sendAT2('AT+CENG=?', function (error, result) {
+        this.sendExAT2('AT+CENG=?', 10000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
             } else {
@@ -536,7 +497,7 @@ function createCommands(cmdManager) {
         });
     };
     commands.setCENGon = function (callback) {
-        this.sendAT1('AT+CENG=1,1', function (error, result) {
+        this.sendExAT1('AT+CENG=1,1', 10000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
             } else {
@@ -545,7 +506,7 @@ function createCommands(cmdManager) {
         });
     };
     commands.getCENGinfo = function (callback) {
-        this.sendAT3('AT+CENG?', 8, function (error, result) {
+        this.sendExAT3('AT+CENG?', 8, 15000, function (error, result) {
             if (error) {
                 callback && callback(error, result);
             } else {

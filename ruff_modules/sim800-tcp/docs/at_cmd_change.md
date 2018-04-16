@@ -25,7 +25,11 @@ this._getResponse(cmd, invokeCallbackOnce); // 在这里增加了可选的timeou
 
 各命令的最大Response Time:
 AT+CIPSEND,  645 seconds
-AT+CGATT , 10 seconds
+AT+CGATT ,   10 seconds
+AT+CIICR,    85 s
+AT+CLBS,     10s
+AT+CLBSCFG,  10s
+AT+CENG   ,  10s, 15s
 
 ```
 
