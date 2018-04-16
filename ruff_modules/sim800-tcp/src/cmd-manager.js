@@ -182,7 +182,7 @@ CmdManager.prototype._getResponse = function (cmd, callback) {
         that._cs = State.idle;
 
         if (error) {
-            console.log('====== error ======', error);
+            console.log('====== error ======\n', error);
         }
         callback(error, response);
     }

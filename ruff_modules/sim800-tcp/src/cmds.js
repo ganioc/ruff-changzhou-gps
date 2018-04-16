@@ -2,6 +2,7 @@
 
 var series = require('ruff-async').series;
 var isPowerOn = false;
+var MAX_TIMES_CGATT = 5;
 
 var debug = (function () {
     var header = '[' + __filename + ']';
@@ -214,7 +215,7 @@ function createCommands(cmdManager) {
         function _next() {
             that.getAttachStatus(function (error, status) {
                 if (error || status === '0') {
-                    if (times >= 3) {
+                    if (times >= MAX_TIMES_CGATT) {
                         callback && callback(new Error('GPRS attach timeout'));
                         return;
                     }
@@ -241,6 +242,7 @@ function createCommands(cmdManager) {
                 return;
             }
             callback && callback(undefined, values);
+            // up, with IP address
             cmdManager.emit('up', values[values.length - 1]);
         });
     };
