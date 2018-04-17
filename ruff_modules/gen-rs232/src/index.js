@@ -14,6 +14,10 @@ module.exports = driver({
 
             that.emit('data', data);
         });
+
+        this._uart.on('error', function (error) {
+            that.emit('error', error);
+        });
     },
 
     exports: {
