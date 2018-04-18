@@ -140,6 +140,20 @@
                     }
                 }
             }
+        },
+        {
+            "id": "readpin",
+            "model": "gen-gpin",
+            "driver": "gen-gpin",
+            "inputs": {
+                "gpio-in": {
+                    "type": "gpio",
+                    "args": {
+                        "direction": "in",
+                        "edge": "both"
+                    }
+                }
+            }
         }
     ]
 }

@@ -87,6 +87,8 @@ $.ready(function (error) {
 
     //runRS485();
 
+    runReadpin();
+
     gprsHandle = new GPRS({
         gprs: $("#gprs"),
         initTimeout: INIT_GPRS_TIMEOUT,
@@ -318,4 +320,15 @@ function runFlash() {
     //Flash.write(0, "hello world");
     var data = Flash.read(0, 11);
     console.log(data);
+}
+// 拨码开关
+function runReadpin() {
+    setInterval(function () {
+        GPIO.readpin(function (err, d) {
+            if (err) {
+                return;
+            }
+            console.log("read:" + d);
+        });
+    }, 1000);
 }

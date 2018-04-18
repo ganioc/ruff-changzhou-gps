@@ -128,3 +128,14 @@ exports.readAin1 = function (cb) {
         cb(undefined, voltage);
     });
 };
+// 检测外面的拨码开关, SW2-1 pin
+// 返回1 或 0
+exports.readpin = function (cb) {
+    $("#readpin").read(function (error, voltage) {
+        if (error) {
+            cb(error);
+            return;
+        }
+        cb(undefined, voltage);
+    });
+};

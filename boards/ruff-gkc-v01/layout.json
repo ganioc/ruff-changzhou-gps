@@ -16,6 +16,8 @@
         "din1/gpio-in": "ruff-kgc-v01/DIN1",
         "rs232/gnd": "ground/gnd-0",
         "rs232/uart": "ruff-kgc-v01/RS232",
-        "rs485/rs485": "ruff-kgc-v01/RS485"
+        "rs485/rs485": "ruff-kgc-v01/RS485",
+        "readpin/gnd": "ground/gnd-0",
+        "readpin/gpio-in": "ruff-kgc-v01/PL7"
     }
 }
