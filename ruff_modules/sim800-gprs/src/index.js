@@ -51,41 +51,41 @@ function GPRS(option) {
         // GPIO.turnOnGreen();
 
         // Begin the work
-        // that.client = new option.gprs.Socket();
-        // that.client.connect({
-        //     port: option.port,
-        //     host: option.addr
-        // });
-        // that.client.on("connect", function () {
-        //     debug("connected to server:" + option.addr + ":" + option.port);
-        //     if (that.bFirstTime === true) {
-        //         that.bFirstTime = false;
-        //         option.callback();
-        //     }
-        // });
-        // that.client.on("end", function () {
-        //     debug("disconnected from server");
-        // });
+        that.client = new option.gprs.Socket();
+        that.client.connect({
+            port: option.port,
+            host: option.addr
+        });
+        that.client.on("connect", function () {
+            debug("connected to server:" + option.addr + ":" + option.port);
+            if (that.bFirstTime === true) {
+                that.bFirstTime = false;
+                option.callback();
+            }
+        });
+        that.client.on("end", function () {
+            debug("disconnected from server");
+        });
 
-        // that.client.on("data", function (data) {
-        //     debug(data);
-        //     option.dataCallback(data);
-        // });
+        that.client.on("data", function (data) {
+            debug(data);
+            option.dataCallback(data);
+        });
 
-        // that.client.on("error", function (err) {
-        //     debug("gprs client has error:");
-        //     debug(err);
-        // });
-        // that.client.on("close", function (error) {
-        //     debug("socket closed, try to reconnect");
-        //     debug(error);
-        //     setTimeout(function () {
-        //         that.client.connect({
-        //             port: option.port,
-        //             host: option.addr
-        //         });
-        //     }, 20000);
-        // });
+        that.client.on("error", function (err) {
+            debug("gprs client has error:");
+            debug(err);
+        });
+        that.client.on("close", function (error) {
+            debug("socket closed, try to reconnect");
+            debug(error);
+            setTimeout(function () {
+                that.client.connect({
+                    port: option.port,
+                    host: option.addr
+                });
+            }, 20000);
+        });
 
 
         // Begin the eClient for OTA purpose
@@ -95,13 +95,11 @@ function GPRS(option) {
         debug("OTA IP:", eConfig.host);
         debug("OTA Port:", eConfig.port);
 
+        //  if you want to turnOn led after connected to explorer,
+        //  assgin state property to this option
+        // state: eClientLed,
         if (eConfig) {
             that.eClient = new EClient(option.gprs, eConfig, {
-
-                //  if you want to turnOn led after connected to explorer,
-                //  assgin state property to this option
-
-                // state: eClientLed,
                 reboot: ruff.softReset,
                 timesErrorToReboot: 10 // -1 to forbit reboot
             });
@@ -109,8 +107,6 @@ function GPRS(option) {
         } else {
             log.error("Invalid explorer connConfig");
         }
-
-
     });
 }
 
