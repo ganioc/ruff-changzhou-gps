@@ -101,7 +101,8 @@ function GPRS(option) {
         if (eConfig) {
             that.eClient = new EClient(option.gprs, eConfig, {
                 reboot: ruff.softReset,
-                timesErrorToReboot: 10 // -1 to forbit reboot
+                timesErrorToReboot: 10, // -1 to forbit reboot
+                periodHeartbeat: 20
             });
             that.eClient.connect(46000); // 连接OTA server, 46秒后
         } else {

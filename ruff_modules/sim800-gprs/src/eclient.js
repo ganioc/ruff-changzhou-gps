@@ -51,7 +51,7 @@ EClient.prototype.connect = function (timeout) {
 
   var that = this;
 
-  if (this._ecnt >= 5) {
+  if (this._ecnt >= that._handles.timesErrorToReboot) {
     console.log("Eclient " + this._ecnt + " connect failed, will reboot");
     setTimeout(ruff.softReset, 5000);
   }
@@ -96,7 +96,8 @@ EClient.prototype.start = function () {
   });
 
   that.comm.tryConnect(8000, function () {
-    that.comm.tryHeartbeat(20000);
+    that.comm.tryHeartbeat(that._handles.periodHeartbeat ||
+      20000);
   });
 };
 
