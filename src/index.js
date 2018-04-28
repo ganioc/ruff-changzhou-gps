@@ -93,6 +93,9 @@ $.ready(function (error) {
         gprs: $("#gprs"),
         initTimeout: INIT_GPRS_TIMEOUT,
         powerOnTimeout: PON_GPRS_TIMEOUT,
+        timesHeartbeat: 10, // heartbeat counter to reset, -1 forbid
+        timesOTAConnect: 10, // OTA connect times
+        periodHeartbeat: 21000,
         port: PORT,
         addr: ADDR,
         callback: mainHandle, // main function

@@ -44,7 +44,7 @@ function GPRS(option) {
 
     netDev.powerOff();
 
-    netDev.on("off", function () {
+    netDev.on("poweroff", function () {
         netDev.powerOn();
         cmdManager.reset();
     });
@@ -243,10 +243,10 @@ GPRS.prototype.mainCallback = function (netDev, option) {
             });
         }, 20000);
     });
-    that.client.connect({
-        port: option.port,
-        host: option.addr
-    });
+    // that.client.connect({
+    //     port: option.port,
+    //     host: option.addr
+    // });
 
     // Begin the eClient for OTA purpose
     debug("Try to connect to OTA server:");
@@ -261,8 +261,9 @@ GPRS.prototype.mainCallback = function (netDev, option) {
     if (eConfig) {
         that.eClient = new EClient(option.gprs, eConfig, {
             reboot: ruff.softReset,
-            timesErrorToReboot: 50, // -1 to forbit reboot
-            periodHeartbeat: 20000,
+            timesHeartbeat: option.periodHeartbeat || 50, // -1 to forbit reboot
+            timesOTAConnect: option.timesOTAConnect || 50,
+            periodHeartbeat: option.periodHeartbeat || 20000,
             netDev: option.gprs
         });
         that.eClient.connect(46000); // 连接OTA server, 46秒后

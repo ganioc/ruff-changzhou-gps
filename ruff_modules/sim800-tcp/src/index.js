@@ -55,7 +55,7 @@ module.exports = driver({
                 console.log("power off");
             });
             setTimeout(function () {
-                that.emit("off");
+                that.emit("poweroff");
             }, 3000);
         };
 
