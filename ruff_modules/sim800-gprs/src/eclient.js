@@ -51,7 +51,7 @@ EClient.prototype.connect = function (timeout) {
 
   var that = this;
 
-  if (this._ecnt >= that._handles.timesErrorToReboot) {
+  if (this._ecnt >= that._handles.timesErrorToReboot && that._handles.timesErrorToReboot > 0) {
     console.log("Eclient " + this._ecnt + " connect failed, will reboot");
     setTimeout(ruff.softReset, 5000);
   }
