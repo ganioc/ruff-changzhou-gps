@@ -31,130 +31,68 @@ function GPRS(option) {
     this.client = undefined;
     this.gprs = option.gprs;
     this.eClient = undefined; // OTA client
-    this.bFirstTime = true;
+    this.bFirstTime = true; // 首次开机为true, 中间重新拨号，已为false
+    this.bFirstConnect = true;
+    this.tag = option.tag || "netDev";
+    this.timer = null; // timeout handle
 
     var that = this;
+    var cmdManager = global.connectionManager.getCmdManager();
+    var netDev = this.gprs;
 
-    enableNetDev(option.gprs, {
-        initTimeout: option.initTimeout || INIT_GPRS_TIMEOUT,
-        powerOnTimeout: option.powerOnTimeout || PON_GPRS_TIMEOUT,
-        reboot: ruff.softReset,
-        tag: "GPRS"
-    }, function () {
-        if (option.afterConnect === undefined) {
-            throw new Error("option.afterConnect missing");
-        }
-        option.afterConnect && option.afterConnect();
-        // beep(500);
+    that.client = new netDev.Socket();
 
-        // GPIO.flashStatusLEDConnected();
-        // GPIO.turnOnGreen();
+    netDev.powerOff();
 
-        // Begin the work
-        that.client = new option.gprs.Socket();
-        that.client.connect({
-            port: option.port,
-            host: option.addr
-        });
-        that.client.on("connect", function () {
-            debug("connected to server:" + option.addr + ":" + option.port);
-            if (that.bFirstTime === true) {
-                that.bFirstTime = false;
-                option.callback();
-            }
-        });
-        that.client.on("end", function () {
-            debug("disconnected from server");
-        });
-
-        that.client.on("data", function (data) {
-            debug(data);
-            option.dataCallback(data);
-        });
-
-        that.client.on("error", function (err) {
-            debug("gprs client has error:");
-            debug(err);
-        });
-        that.client.on("close", function (error) {
-            debug("socket closed, try to reconnect");
-            debug(error);
-            setTimeout(function () {
-                that.client.connect({
-                    port: option.port,
-                    host: option.addr
-                });
-            }, 20000);
-        });
-
-
-        // Begin the eClient for OTA purpose
-        debug("Try to connect to OTA server:");
-        var eConfig = config.getEConnConfig(sysconfig);
-
-        debug("OTA IP:", eConfig.host);
-        debug("OTA Port:", eConfig.port);
-
-        //  if you want to turnOn led after connected to explorer,
-        //  assgin state property to this option
-        // state: eClientLed,
-        if (eConfig) {
-            that.eClient = new EClient(option.gprs, eConfig, {
-                reboot: ruff.softReset,
-                timesErrorToReboot: 10, // -1 to forbit reboot
-                periodHeartbeat: 20
-            });
-            that.eClient.connect(46000); // 连接OTA server, 46秒后
-        } else {
-            log.error("Invalid explorer connConfig");
-        }
+    netDev.on("off", function () {
+        netDev.powerOn();
+        cmdManager.reset();
     });
-}
 
-var enableNetDev = function (netDev, options, callback) {
-    var initTimeout = options.initTimeout >= 0 ? options.initTimeout : 100;
-    var powerOnTimeout = options.powerOnTimeout >= 0 ? options.powerOnTimeout : 100;
-    var reboot = options.reboot || function () {
-        console.log("reboot...");
-    };
-    var tag = options.tag || "netDev";
-    var timer;
 
     netDev.on("error", function (error) {
-        console.log("[" + tag + "] error", error);
+        console.log("[" + that.tag + "] error", error);
     });
     netDev.on("down", function () {
-        console.log("[" + tag + "] down, will reboot");
-        setTimeout(reboot, 3000);
+        console.log("[" + that.tag + "] gprs down");
+        console.log("[" + that.tag + "] try to redial after 5 s");
+        setTimeout(function () {
+            that.powerOff();
+        }, 5000);
     });
-    netDev.on("end", function () {
-        console.log("[" + tag + "] power down");
-    });
-
-    netDev.once("ready", function () {
-        console.log("[" + tag + "] ready");
-        clearTimeout(timer);
+    // netDev.on("end", function () {
+    //     console.log("[" + that.tag + "] socket end");
+    // });
+    // gprs 开机成功
+    netDev.on("ready", function () {
+        //Only dial once, this is ensured in sim800-tcp/index.js
+        console.log("[" + that.tag + "] ready");
+        clearTimeout(that.timer);
 
         if (netDev.getSignalStrength) {
             netDev.getSignalStrength(function (error, value) {
                 if (error) {
-                    console.log("[" + tag + "] get signal error", error);
+                    console.log("[" + that.tag + "] get signal error", error);
                 } else {
-                    console.log("[" + tag + "] signal is", value);
+                    console.log("[" + that.tag + "] signal is", value);
                 }
             });
         }
+
+        // 拨号成功,
         netDev.once("up", function (ip) {
-            clearTimeout(timer);
-            console.log("[" + tag + "] ip is", ip);
-            callback && callback();
+            clearTimeout(that.timer);
+            console.log("[" + that.tag + "] ip is", ip);
+            that.mainCallback(netDev, option);
         });
 
-        timer = setTimeout(function () {
-            console.log("[" + tag + "] init timeout");
-            setTimeout(reboot, 5000);
-        }, initTimeout);
+        // 设置拨号超时,定时器
+        that.timer = setTimeout(function () {
+            console.log("[" + that.tag + "] init timeout");
+            setTimeout(netDev.powerOff, 5000);
+        }, option.initTimeout);
 
+        //开始拨号
         if (netDev.autoInit) {
             console.log("AutoInit");
             netDev.autoInit(function (err, data) {
@@ -171,14 +109,8 @@ var enableNetDev = function (netDev, options, callback) {
             netDev.init();
         }
     });
+}
 
-    timer = setTimeout(function () {
-        console.log("[" + tag + "] poweron timeout");
-        setTimeout(reboot, 3000);
-    }, powerOnTimeout);
-
-    netDev.powerOn && netDev.powerOn();
-};
 GPRS.prototype.write = function (data, callback) {
     this.client.write(data, callback);
 };
@@ -260,6 +192,83 @@ GPRS.prototype.configGPRS = function (callback) {
         that.configLBS();
     });
     false && callback;
+};
+
+GPRS.prototype.mainCallback = function (netDev, option) {
+    debug("Into MainCallback");
+    if (option.afterConnect === undefined) {
+        throw new Error("option.afterConnect missing");
+    }
+    option.afterConnect && option.afterConnect();
+
+    var that = this;
+
+    // netDev.powerOff();
+
+    // return;
+
+    if (that.bFirstTime === false) {
+        debug("not 1st time boot up");
+        return;
+    }
+    that.bFirstTime = false;
+    // Begin the work
+    that.client.on("connect", function () {
+        debug("connected to server:" + option.addr + ":" + option.port);
+        if (that.bFirstConnect === true) {
+            that.bFirstConnect = false;
+            option.callback();
+        }
+    });
+    that.client.on("end", function () {
+        debug("disconnected from server");
+    });
+
+    that.client.on("data", function (data) {
+        debug(data);
+        option.dataCallback(data);
+    });
+
+    that.client.on("error", function (err) {
+        debug("gprs client has error:");
+        debug(err);
+    });
+    that.client.on("close", function (error) {
+        debug("socket closed, try to reconnect");
+        debug(error);
+        setTimeout(function () {
+            that.client.connect({
+                port: option.port,
+                host: option.addr
+            });
+        }, 20000);
+    });
+    that.client.connect({
+        port: option.port,
+        host: option.addr
+    });
+
+    // Begin the eClient for OTA purpose
+    debug("Try to connect to OTA server:");
+    var eConfig = config.getEConnConfig(sysconfig);
+
+    debug("OTA IP:", eConfig.host);
+    debug("OTA Port:", eConfig.port);
+
+    //  if you want to turnOn led after connected to explorer,
+    //  assgin state property to this option
+    // state: eClientLed,
+    if (eConfig) {
+        that.eClient = new EClient(option.gprs, eConfig, {
+            reboot: ruff.softReset,
+            timesErrorToReboot: 50, // -1 to forbit reboot
+            periodHeartbeat: 20000,
+            netDev: option.gprs
+        });
+        that.eClient.connect(46000); // 连接OTA server, 46秒后
+    } else {
+        log.error("Invalid explorer connConfig");
+    }
 };
 
 module.exports = GPRS;

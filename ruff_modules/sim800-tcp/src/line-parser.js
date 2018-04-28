@@ -23,6 +23,8 @@ Parser.prototype.init = function () {
     this._buffer = Buffer.alloc(0);
 };
 
+Parser.prototype.reset = Parser.prototype.init;
+
 Parser.prototype.feed = function (data) {
     this._buffer = Buffer.concat([this._buffer, data]);
     debug('data in cache:', this._buffer.toString().replace(/\r/g, '\\r').replace(/\n/g, '\\n'));

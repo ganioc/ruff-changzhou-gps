@@ -55,6 +55,12 @@ function CmdManager(port) {
 }
 util.inherits(CmdManager, EventEmitter);
 
+CmdManager.prototype.reset = function () {
+    this._parser.reset();
+    this._expectedStatus = false;
+    this._responseData = [];
+};
+
 CmdManager.prototype.sendAT = function (cmd, callback) {
     // cmd.content: AT content
     // cmd.timeout: timeout

@@ -19,6 +19,7 @@ function EClient(netDev, connConfig, handles) {
   var that = this;
 
   this.client = new netDev.Socket();
+
   that.client.on("connect", function () {
     // that.socket = client;
     that._ecnt = 0;
@@ -36,7 +37,7 @@ function EClient(netDev, connConfig, handles) {
     that._handles.state && that._handles.state.turnOff();
     // client.removeAllListeners();
     setTimeout(function () {
-      that.connect(40000);
+      that.connect(20000);
     }, 2000);
   });
 
@@ -87,10 +88,11 @@ EClient.prototype.start = function () {
       // Without rebooting 
       //setTimeout(that._handles.reboot, 5000);
     }
-    if (that._ok === true && 0 > that._handles.timesErrorToReboot && that.hbCounts > that._handles.timesErrorToReboot) {
+    if (that._ok === true && 0 < that._handles.timesErrorToReboot && that.hbCounts > that._handles.timesErrorToReboot) {
       console.log("hbCount larger than 100, reboot... ... ... ...");
       setTimeout(function () {
-        ruff.softReset();
+        // ruff.softReset();
+        that._handles.netDev || that._handles.netDev.powerOff();
       }, 5000);
     }
   });

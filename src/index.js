@@ -87,7 +87,7 @@ $.ready(function (error) {
 
     //runRS485();
 
-    runReadpin();
+    // runReadpin();
 
     gprsHandle = new GPRS({
         gprs: $("#gprs"),

@@ -8,6 +8,9 @@ function ConnectionManager(connectionsNum, cmdManager) {
     cmdManager.on('connectionData', this._processConnectionData.bind(this));
     cmdManager.on('connectionState', this._processConnectionState.bind(this));
 }
+ConnectionManager.prototype.getCmdManager = function () {
+    return this._cmdManager;
+};
 
 ConnectionManager.prototype.newConnection = function () {
     var index = this._getConnectionIndex();

@@ -91,7 +91,8 @@ function createCommands(cmdManager) {
 
     commands.startup = function (callback) {
         if (isPowerOn) {
-            return;
+            // return;
+            console.log("power on again");
         }
 
         var that = this;
@@ -142,7 +143,8 @@ function createCommands(cmdManager) {
 
     commands.powerOff = function (callback) {
         if (!isPowerOn) {
-            return;
+            // return;
+
         }
         this.sendAT1('AT+CPOWD=1', function (error, result) {
             if (error) {

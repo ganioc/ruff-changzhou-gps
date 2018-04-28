@@ -16,7 +16,7 @@ module.exports = driver({
                 console.log('[U]', data.toString().replace(/\r/g, '\\r').replace(/\n/g, '\\n'));
             });
         }
-        this._enPwr.write(Level.high);
+        this._enPwr.write(Level.high); // shut power off
         var cmdManager = new CmdManager(this._uart);
         global.connectionManager = new ConnectionManager(6, cmdManager);
         var cmds = createCommands(cmdManager);
@@ -50,6 +50,15 @@ module.exports = driver({
             });
         };
 
+        this.powerOff = function () {
+            that._enPwr.write(Level.high, function () {
+                console.log("power off");
+            });
+            setTimeout(function () {
+                that.emit("off");
+            }, 3000);
+        };
+
         cmdManager.on('up', function (localIP) {
             that.emit('up', localIP);
         });
@@ -61,5 +70,6 @@ module.exports = driver({
                 that.emit('down');
             }
         });
+        
     }
 });
