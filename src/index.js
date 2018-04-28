@@ -113,7 +113,7 @@ $.ready(function (error) {
 });
 // TCP data handler
 function dataHandle(data) {
-    debug("dataHandle");
+    debug("dataHandle:", data);
     false && data;
 }
 

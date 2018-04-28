@@ -4,10 +4,8 @@ var EventEmitter = require('events');
 var stream = require('stream');
 var util = require('util');
 //var assert = require('assert');
-function assert() {
-}
-assert.ok = function () {
-};
+function assert() {}
+assert.ok = function () {};
 
 var TCP = require('./tcp.js');
 
@@ -25,7 +23,7 @@ function exceptionWithHostPort(err, syscall, address, port, additional) {
 
 function isLegalPort(port) {
     if ((typeof port !== 'number' && typeof port !== 'string') ||
-            (typeof port === 'string' && port.trim().length === 0))
+        (typeof port === 'string' && port.trim().length === 0))
         return false;
     return +port === (+port >>> 0) && port <= 0xFFFF;
 }
@@ -158,7 +156,6 @@ function Socket(options) {
             this.read(0);
         }
     }
-
     // Used after `.destroy()`
     this._bytesRead = 0;
 }
@@ -220,7 +217,7 @@ function onSocketFinish() {
 
 function afterShutdown(socket) {
     debug('afterShutdown destroyed=%j', socket.destroyed,
-                socket._readableState);
+        socket._readableState);
 
     // callback may come after call to destroy.
     if (socket.destroyed)
@@ -350,7 +347,9 @@ Socket.prototype._read = function (n) {
 
     if (this.connecting || !this._handle) {
         debug('_read wait for connection');
-        this.once('connect', function () { return that._read(n); });
+        this.once('connect', function () {
+            return that._read(n);
+        });
     } else if (!this._handle.reading) {
         // not already reading, start the flow
         debug('Socket._read readStart');
@@ -380,10 +379,10 @@ Socket.prototype.end = function (data, encoding) {
 // Call whenever we set writable=false or readable=false
 function maybeDestroy(socket) {
     if (!socket.readable &&
-            !socket.writable &&
-            !socket.destroyed &&
-            !socket.connecting &&
-            !socket._writableState.length) {
+        !socket.writable &&
+        !socket.destroyed &&
+        !socket.connecting &&
+        !socket._writableState.length) {
         socket.destroy();
     }
 }
@@ -814,7 +813,9 @@ function afterConnect(socket, address, port, error) {
 }
 exports.Socket = Socket;
 
-function toNumber(x) { return (x = Number(x)) >= 0 ? x : false; }
+function toNumber(x) {
+    return (x = Number(x)) >= 0 ? x : false;
+}
 
 function emitErrorNT(self, err) {
     debug('emitErrorNT');
