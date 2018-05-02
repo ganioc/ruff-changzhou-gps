@@ -93,8 +93,9 @@ $.ready(function (error) {
         gprs: $("#gprs"),
         initTimeout: INIT_GPRS_TIMEOUT,
         powerOnTimeout: PON_GPRS_TIMEOUT,
-        timesHeartbeat: 10, // heartbeat counter to reset, -1 forbid
-        timesOTAConnect: 10, // OTA connect times
+        timesHeartbeat: 20, // heartbeat counter to reset, -1 forbid
+        timesOTAConnect: 20, // OTA connect times, 连接10次*20秒OTA服务器失败，系统重启；设置成-1将用不重启系统
+        delayOTAConnect: 20000, // OTA connect delay
         periodHeartbeat: 21000,
         port: PORT,
         addr: ADDR,

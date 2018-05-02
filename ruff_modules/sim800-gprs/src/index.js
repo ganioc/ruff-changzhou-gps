@@ -243,10 +243,10 @@ GPRS.prototype.mainCallback = function (netDev, option) {
             });
         }, 20000);
     });
-    // that.client.connect({
-    //     port: option.port,
-    //     host: option.addr
-    // });
+    that.client.connect({
+        port: option.port,
+        host: option.addr
+    });
 
     // Begin the eClient for OTA purpose
     debug("Try to connect to OTA server:");
@@ -263,10 +263,13 @@ GPRS.prototype.mainCallback = function (netDev, option) {
             reboot: ruff.softReset,
             timesHeartbeat: option.periodHeartbeat || 50, // -1 to forbit reboot
             timesOTAConnect: option.timesOTAConnect || 50,
-            periodHeartbeat: option.periodHeartbeat || 20000,
-            netDev: option.gprs
+            delayOTAConnect: option.delayOTAConnect || 20000,
+            periodHeartbeat: option.periodHeartbeat || 20000
         });
-        that.eClient.connect(46000); // 连接OTA server, 46秒后
+        setTimeout(function () {
+            that.eClient.connect(); // 连接OTA server, 46秒后
+        }, 46000);
+
     } else {
         log.error("Invalid explorer connConfig");
     }
