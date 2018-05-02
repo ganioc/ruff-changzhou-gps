@@ -126,7 +126,7 @@ function mainHandle() {
     debug("main");
     // hook all peripheral devices
     // 
-    gprsHandle.configGPRS(undefined);
+    // gprsHandle.configGPRS(undefined);
 
     // task 1
     setInterval(function () {
@@ -178,6 +178,7 @@ function task1() {
     // if GPS is OK
     if (dataGPS.latitude !== 0 || dataGPS.longitude !== 0) {
         debug("Getting real GPS succeed");
+        
         gprsHandle.write(chip + ":" + "GPS:" + dataGPS.longitude + ":" + dataGPS.latitude);
         return;
     } else {

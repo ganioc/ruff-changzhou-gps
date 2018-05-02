@@ -30,7 +30,7 @@ var debug = (function () {
 function GPRS(option) {
     this.client = undefined;
     this.gprs = option.gprs;
-    this.eClient = undefined; // OTA client
+
     this.bFirstTime = true; // 首次开机为true, 中间重新拨号，已为false
     this.bFirstConnect = true;
     this.tag = option.tag || "netDev";
@@ -41,12 +41,14 @@ function GPRS(option) {
     var netDev = this.gprs;
 
     that.client = new netDev.Socket();
+    this.eClient = undefined; // OTA client
 
     netDev.powerOff();
 
     netDev.on("poweroff", function () {
         netDev.powerOn();
         cmdManager.reset();
+        global.connectionManager.reset();
     });
 
 
@@ -83,7 +85,11 @@ function GPRS(option) {
         netDev.once("up", function (ip) {
             clearTimeout(that.timer);
             console.log("[" + that.tag + "] ip is", ip);
+
+            that.configGPRS(undefined);
+
             that.mainCallback(netDev, option);
+
         });
 
         // 设置拨号超时,定时器
@@ -112,6 +118,10 @@ function GPRS(option) {
 }
 
 GPRS.prototype.write = function (data, callback) {
+    if (global.bUp === false) {
+        console.log("bUp not ready");
+        return;
+    }
     this.client.write(data, callback);
 };
 GPRS.prototype.configLBS = function (callback) {
@@ -138,6 +148,12 @@ GPRS.prototype.configLBS = function (callback) {
 GPRS.prototype.getLBS = function (callback) {
     var that = this;
     debug("getLBS");
+
+    if (global.bUp === false) {
+        console.log("Not ready yet, network");
+        callback("error", undefined);
+        return;
+    }
 
     series([
         that.gprs.generateATCmd(that.gprs.getCLBS),
@@ -175,6 +191,13 @@ GPRS.prototype.configCENG = function (callback) {
     });
 };
 GPRS.prototype.getCENG = function (callback) {
+    var that = this;
+
+    if (global.bUp === false) {
+        console.log("Not ready yet, network");
+        callback("error", undefined);
+        return;
+    }
     this.gprs.getCENGinfo(function (err, data) {
         if (err) {
             callback && callback(err);
@@ -212,6 +235,12 @@ GPRS.prototype.mainCallback = function (netDev, option) {
         return;
     }
     that.bFirstTime = false;
+
+    // setInterval(function () {
+    //     netDev.powerOff();
+    // }, 200000);
+
+    /////////////////////////////////////////////////////////////////////
     // Begin the work
     that.client.on("connect", function () {
         debug("connected to server:" + option.addr + ":" + option.port);
@@ -236,12 +265,20 @@ GPRS.prototype.mainCallback = function (netDev, option) {
     that.client.on("close", function (error) {
         debug("socket closed, try to reconnect");
         debug(error);
+
+        // if (that.bUp === false) {
+        //     setTimeout(function () {
+        //         that.client.emit("close", "wait");
+        //     }, 5000);
+        //     return;
+        // }
+
         setTimeout(function () {
             that.client.connect({
                 port: option.port,
                 host: option.addr
             });
-        }, 20000);
+        }, 30000);
     });
     that.client.connect({
         port: option.port,
@@ -266,9 +303,17 @@ GPRS.prototype.mainCallback = function (netDev, option) {
             delayOTAConnect: option.delayOTAConnect || 20000,
             periodHeartbeat: option.periodHeartbeat || 20000
         });
+        that.eClient._client.on("close", function (hasError) {
+            debug("[Eclient close]", hasError);
+            debug("reconnect");
+
+            setTimeout(function () {
+                that.eClient.connect();
+            }, 36000);
+        });
         setTimeout(function () {
             that.eClient.connect(); // 连接OTA server, 46秒后
-        }, 46000);
+        }, 36000);
 
     } else {
         log.error("Invalid explorer connConfig");

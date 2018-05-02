@@ -54,17 +54,7 @@ function EClient(netDev, connConfig, handles) {
   this._client.on("error", function (error) {
     debug("[Eclient error]", error);
   });
-  this._client.on("close", function (hasError) {
-    debug("[Eclient close]", hasError);
-    that._handles.state && that._handles.state.turnOff();
 
-    debug("reconnect");
-
-    setTimeout(function () {
-      that.connect();
-    }, 20000);
-
-  });
   this._client.on("end", function () {
     debug("[Eclient] end");
   });

@@ -5,11 +5,22 @@ var Connection = require('./connection');
 function ConnectionManager(connectionsNum, cmdManager) {
     this._allConnections = new Array(connectionsNum);
     this._cmdManager = cmdManager;
+    this._connectionsNum = connectionsNum;
+
     cmdManager.on('connectionData', this._processConnectionData.bind(this));
     cmdManager.on('connectionState', this._processConnectionState.bind(this));
 }
 ConnectionManager.prototype.getCmdManager = function () {
     return this._cmdManager;
+};
+// Added by Yang Jun 2018-4-25
+ConnectionManager.prototype.reset = function () {
+    for (var i = 0; i < this._allConnections.length; i++) {
+        if (!this._allConnections[i]) {
+            this._dropConnection(i);
+        }
+    }
+    this._allConnections = new Array(this._connectionsNum);
 };
 
 ConnectionManager.prototype.newConnection = function () {
@@ -38,7 +49,7 @@ ConnectionManager.prototype._wrapConnection = function (connection, index) {
             }
             callback();
         });
-    }
+    };
 };
 
 ConnectionManager.prototype._dropConnection = function (index) {

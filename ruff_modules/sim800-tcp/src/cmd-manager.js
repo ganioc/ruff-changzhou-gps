@@ -73,6 +73,7 @@ CmdManager.prototype.sendAT = function (cmd, callback) {
     //      OK is the 2nd part result[1]
     // 3: \r\nOK\r\n\r\n...\r\n\r\n...\r\n
     // cmd.responseLines: response maybe multiple lines
+
     cmd.type = 'at';
     cmd.content += '\r';
     this._cmdQueue.push(this, [cmd], callback);

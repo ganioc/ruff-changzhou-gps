@@ -11,6 +11,8 @@ module.exports = driver({
     attach: function (inputs) {
         this._enPwr = inputs['enPwr'];
         this._uart = inputs['uart'];
+        global.bUp = false; // network is Up, ready for using
+
         if (0) {
             this._uart.on('data', function (data) {
                 console.log('[U]', data.toString().replace(/\r/g, '\\r').replace(/\n/g, '\\n'));
@@ -30,6 +32,8 @@ module.exports = driver({
 
         this.powerOn = function () {
             cmdManager.once('sms', function () {
+                global.bUp = true; // Added by Yang Jun
+
                 that.startup(function (error, values) {
                     if (error) {
                         console.log('startup failed, result is', values);
@@ -51,6 +55,8 @@ module.exports = driver({
         };
 
         this.powerOff = function () {
+            global.bUp = false; // Added by Yang Jun
+
             that._enPwr.write(Level.high, function () {
                 console.log("power off");
             });
@@ -70,6 +76,6 @@ module.exports = driver({
                 that.emit('down');
             }
         });
-        
+
     }
 });

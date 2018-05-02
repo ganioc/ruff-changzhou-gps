@@ -18,7 +18,7 @@ var debug = (function () {
 function parseGPS(str) {
     var lst = str.split(",");
 
-    if (lst[2] === "A") {
+    if (lst[2] === "A" && lst[3].length >= 2 && lst[5].length >= 3) {
         latestData.timeStamp = new Date().getTime();
         var degree = parseFloat(lst[3].substring(0, 2));
         var minute = parseFloat(lst[3].substring(2));
