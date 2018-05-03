@@ -104,7 +104,7 @@ function GPRS(option) {
         that.timer = setTimeout(function () {
             console.log("[" + that.tag + "] init timeout");
             setTimeout(netDev.powerOff, 5000);
-        }, option.initTimeout);
+        }, option.initTimeout || INIT_GPRS_TIMEOUT);
 
         //开始拨号
         if (netDev.autoInit) {

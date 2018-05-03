@@ -57,6 +57,8 @@ $.ready(function (error) {
     debug("Read E2prom:");
     debug(EEPROM.getCapacity());
 
+    runAES();
+
     // debug("Read E2prom:");
     // debug(EEPROM.getCapacity());
     // // debug(EEPROM.read(0, 1));
@@ -336,4 +338,23 @@ function runReadpin() {
             console.log("read:" + d);
         });
     }, 1000);
+}
+/*
+AES要求
+数据 data 必须是 16 字节整数倍，并且是 RuffBuffer 的实例
+密钥 key 必须是 16 字节，并且是 RuffBuffer 的实例
+数据 encryptData 是 RuffBuffer 的实例
+
+如果数据不是16字节整数倍的话，必须在后面补数字(任意),分成16字节一段进行加密，解密;
+*/
+function runAES() {
+    var data = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+    var key = Buffer.from([2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5]);
+    debug('--- encrypt ---');
+    var encryptData = ruff.aes.aes_encrypt(data._ruffBuffer, key._ruffBuffer);
+    console.log(Buffer.from(encryptData).toString('hex'));
+    debug('--- decrypt ---');
+    var decryptData = ruff.aes.aes_decrypt(encryptData, key._ruffBuffer);
+    console.log(Buffer.from(decryptData).toString('hex'));
+    debug("--- end ---");
 }
