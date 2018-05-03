@@ -94,7 +94,7 @@ $.ready(function (error) {
         initTimeout: INIT_GPRS_TIMEOUT,
         powerOnTimeout: PON_GPRS_TIMEOUT,
         timesHeartbeat: 20, // heartbeat counter to reset, -1 forbid
-        timesOTAConnect: 20, // OTA connect times, 连接10次*20秒OTA服务器失败，系统重启；设置成-1将用不重启系统
+        timesOTAConnect: 20, // OTA connect times, 连接10次*20秒OTA服务器失败，系统重启；设置成-1将不触发重启系统
         delayOTAConnect: 20000, // OTA connect delay
         periodHeartbeat: 21000,
         port: PORT,
@@ -178,7 +178,7 @@ function task1() {
     // if GPS is OK
     if (dataGPS.latitude !== 0 || dataGPS.longitude !== 0) {
         debug("Getting real GPS succeed");
-        
+
         gprsHandle.write(chip + ":" + "GPS:" + dataGPS.longitude + ":" + dataGPS.latitude);
         return;
     } else {

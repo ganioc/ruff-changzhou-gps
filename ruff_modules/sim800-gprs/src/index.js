@@ -49,6 +49,12 @@ function GPRS(option) {
         netDev.powerOn();
         cmdManager.reset();
         global.connectionManager.reset();
+
+        // this timer is for startup() failure, sms ready failure
+        that.timer = setTimeout(function () {
+            console.log("[" + that.tag + "] power off timeout");
+            setTimeout(netDev.powerOff, 3000);
+        }, PON_GPRS_TIMEOUT);
     });
 
 
@@ -88,6 +94,8 @@ function GPRS(option) {
 
             that.configGPRS(undefined);
 
+            netDev.bUp = true; // Added by Yang Jun
+
             that.mainCallback(netDev, option);
 
         });
@@ -118,7 +126,7 @@ function GPRS(option) {
 }
 
 GPRS.prototype.write = function (data, callback) {
-    if (global.bUp === false) {
+    if (this.gprs.bUp === false) {
         console.log("bUp not ready");
         return;
     }
@@ -149,7 +157,7 @@ GPRS.prototype.getLBS = function (callback) {
     var that = this;
     debug("getLBS");
 
-    if (global.bUp === false) {
+    if (this.gprs.bUp === false) {
         console.log("Not ready yet, network");
         callback("error", undefined);
         return;
@@ -158,7 +166,6 @@ GPRS.prototype.getLBS = function (callback) {
     series([
         that.gprs.generateATCmd(that.gprs.getCLBS),
     ], function (err, values) {
-        debug("-----------------");
         if (err) {
             debug("[getLBS]", err);
             callback && callback(err);
@@ -191,9 +198,8 @@ GPRS.prototype.configCENG = function (callback) {
     });
 };
 GPRS.prototype.getCENG = function (callback) {
-    var that = this;
 
-    if (global.bUp === false) {
+    if (this.gprs.bUp === false) {
         console.log("Not ready yet, network");
         callback("error", undefined);
         return;
@@ -236,9 +242,9 @@ GPRS.prototype.mainCallback = function (netDev, option) {
     }
     that.bFirstTime = false;
 
-    // setInterval(function () {
-    //     netDev.powerOff();
-    // }, 200000);
+    setInterval(function () {
+        netDev.powerOff();
+    }, 240000);
 
     /////////////////////////////////////////////////////////////////////
     // Begin the work
@@ -265,13 +271,6 @@ GPRS.prototype.mainCallback = function (netDev, option) {
     that.client.on("close", function (error) {
         debug("socket closed, try to reconnect");
         debug(error);
-
-        // if (that.bUp === false) {
-        //     setTimeout(function () {
-        //         that.client.emit("close", "wait");
-        //     }, 5000);
-        //     return;
-        // }
 
         setTimeout(function () {
             that.client.connect({

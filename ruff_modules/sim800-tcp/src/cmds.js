@@ -5,19 +5,18 @@ var isPowerOn = false;
 var MAX_TIMES_CGATT = 5;
 
 var debug = (function () {
-    var header = '[' + __filename + ']';
-    return function () {
-        Array.prototype.unshift.call(arguments, header);
-        console.log.apply(this, arguments);
-    };
-    // return function(){};
+    // var header = '[' + __filename + ']';
+    // return function () {
+    //     Array.prototype.unshift.call(arguments, header);
+    //     console.log.apply(this, arguments);
+    // };
+    return function () {};
 })();
 
 function createCommands(cmdManager) {
     var commands = Object.create(null);
 
     // added by yangjun 2018-4-16
-
     commands.sendExAT1 = function (cmd, timeout, callback) {
         if (typeof timeout === "function") {
             cmdManager.sendAT({
