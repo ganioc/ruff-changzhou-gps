@@ -242,9 +242,9 @@ GPRS.prototype.mainCallback = function (netDev, option) {
     }
     that.bFirstTime = false;
 
-    setInterval(function () {
-        netDev.powerOff();
-    }, 240000);
+    // setInterval(function () {
+    //     netDev.powerOff();
+    // }, 240000);
 
     /////////////////////////////////////////////////////////////////////
     // Begin the work
