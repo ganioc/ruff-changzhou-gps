@@ -38,8 +38,9 @@ exports.hookUncaughtException = function () {
 };
 
 
-exports.setTime = function () {
-    var data = new Date("2018-03-30T15:55:05");
+exports.setTime = function (dateIn) {
+    // var data = new Date("2018-03-30T15:55:05");
+    var data = new Date(dateIn);
     ruff.time.set(data.getTime());
 };
 exports.getTime = function () {
